@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vietnamese Lunch Randomizer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ff6933",
+                        "background-light": "#f8f6f5",
+                        "background-dark": "#23140f",
+                    },
+                    fontFamily: {
+                        "display": ["Be Vietnam Pro", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>/* Custom styles for the wheel segments */
+.wheel-segment {
+    clip-path: polygon(100% 0, 100% 100%, 0 100%, 0 0)
+    }
+.conic-gradient-wheel {
+    background: conic-gradient(#ff6933 0deg 60deg, /* Cơm tấm - Primary Orange */ #FBBF24 60deg 120deg, /* Cơm gà - Yellow */ #10B981 120deg 180deg, /* Bún riêu - Green */ #EF4444 180deg 240deg, /* Bún bò - Red */ #06B6D4 240deg 300deg, /* Hủ tiếu - Cyan */ #8B5CF6 300deg 360deg /* Bánh canh - Purple */)
+    }
+.bamboo-pattern {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuD00MrKVw7o38nByoh-Iy5bcX2TltdW48UCyggjApiVkCvR8GR8ZLUti560vxcPfCpkHZjLmfzUMpPi-qDAv9LtxL8ksjmVq-kFQEScHTFCkLNfdc-OC1pg9PRktJ6KWpyG3AFZDdwXnflTJzNNS4f1j0P76FqGI0FBcyCLT2Pj4sdJbVGDeUJnZs9ZRl6WFh9ew_5lZi4wMRolRmg_tMAelCsYuNCbzyCbkpAzX9dxAeeOEycFgIM2Kz4RunJBO8kw3PKVz0yHjdA)
+    }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#181210] dark:text-white transition-colors duration-200">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden bamboo-pattern">
+<!-- Navbar -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f5f1f0] dark:border-b-[#3a2e2a] bg-white/80 dark:bg-[#23140f]/90 backdrop-blur-md px-6 lg:px-10 py-3">
+<div class="flex items-center gap-4">
+<div class="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-2xl">restaurant_menu</span>
+</div>
+<h2 class="text-[#181210] dark:text-white text-xl lg:text-2xl font-black leading-tight tracking-[-0.015em]">Hôm Nay Ăn Gì?</h2>
+</div>
+<div class="flex items-center gap-4 lg:gap-8">
+<div class="hidden md:flex items-center gap-6">
+<a class="text-[#181210] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Trang chủ</a>
+<a class="text-[#181210] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Lịch sử</a>
+<a class="text-[#181210] dark:text-gray-200 text-sm font-medium hover:text-primary transition-colors" href="#">Gợi ý món</a>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 bg-primary hover:bg-orange-600 transition-colors text-white text-sm font-bold shadow-lg shadow-orange-500/30">
+<span class="truncate">Đăng nhập</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex flex-1 flex-col items-center justify-center py-8 px-4 md:px-10 lg:px-20">
+<div class="layout-content-container flex flex-col max-w-[1200px] w-full flex-1 gap-10">
+<!-- Hero Text -->
+<div class="text-center space-y-2">
+<h1 class="text-[#181210] dark:text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">
+                    Can't decide? <span class="text-primary">Spin the wheel!</span>
+</h1>
+<p class="text-[#8d6a5e] dark:text-gray-400 text-base md:text-lg font-normal">
+                    Let fate decide your delicious Vietnamese lunch today.
+                </p>
+</div>
+<!-- Two Column Layout: Wheel & List -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<!-- Wheel Column (Left/Center) -->
+<div class="lg:col-span-7 flex flex-col items-center gap-8 relative">
+<!-- The Wheel Container -->
+<div class="relative size-[320px] md:size-[450px] lg:size-[500px] rounded-full shadow-2xl border-[12px] border-white dark:border-[#3a2e2a] bg-white dark:bg-[#3a2e2a] overflow-hidden group transition-transform hover:scale-[1.02] duration-500">
+<!-- Conic Gradient Wheel Background -->
+<div class="conic-gradient-wheel w-full h-full rounded-full relative shadow-inner">
+<!-- Wheel Segments Content (Icons & Text) -->
+<!-- We rotate containers to position text in the middle of each 60deg slice -->
+<!-- Segment 1: 0-60deg (Middle is 30deg) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-[2px] pointer-events-none" style="transform: rotate(30deg)">
+<div class="absolute top-[10%] left-1/2 -translate-x-1/2 -rotate-30 flex flex-col items-center text-white font-bold drop-shadow-md">
+<span class="material-symbols-outlined text-3xl mb-1">rice_bowl</span>
+<span class="whitespace-nowrap uppercase text-sm tracking-wider">Cơm Tấm</span>
+</div>
+</div>
+<!-- Segment 2: 60-120deg (Middle is 90deg) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-[2px] pointer-events-none" style="transform: rotate(90deg)">
+<div class="absolute top-[10%] left-1/2 -translate-x-1/2 -rotate-90 flex flex-col items-center text-[#23140f] font-bold drop-shadow-sm">
+<span class="material-symbols-outlined text-3xl mb-1">kebab_dining</span>
+<span class="whitespace-nowrap uppercase text-sm tracking-wider">Cơm Gà</span>
+</div>
+</div>
+<!-- Segment 3: 120-180deg (Middle is 150deg) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-[2px] pointer-events-none" style="transform: rotate(150deg)">
+<div class="absolute top-[10%] left-1/2 -translate-x-1/2 -rotate-90 md:-rotate-[150deg] flex flex-col items-center text-white font-bold drop-shadow-md">
+<span class="material-symbols-outlined text-3xl mb-1">soup_kitchen</span>
+<span class="whitespace-nowrap uppercase text-sm tracking-wider">Bún Riêu</span>
+</div>
+</div>
+<!-- Segment 4: 180-240deg (Middle is 210deg) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-[2px] pointer-events-none" style="transform: rotate(210deg)">
+<div class="absolute top-[10%] left-1/2 -translate-x-1/2 -rotate-90 md:-rotate-[210deg] flex flex-col items-center text-white font-bold drop-shadow-md">
+<span class="material-symbols-outlined text-3xl mb-1">ramen_dining</span>
+<span class="whitespace-nowrap uppercase text-sm tracking-wider">Bún Bò</span>
+</div>
+</div>
+<!-- Segment 5: 240-300deg (Middle is 270deg) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-[2px] pointer-events-none" style="transform: rotate(270deg)">
+<div class="absolute top-[10%] left-1/2 -translate-x-1/2 rotate-90 flex flex-col items-center text-white font-bold drop-shadow-md">
+<span class="material-symbols-outlined text-3xl mb-1">set_meal</span>
+<span class="whitespace-nowrap uppercase text-sm tracking-wider">Hủ Tiếu</span>
+</div>
+</div>
+<!-- Segment 6: 300-360deg (Middle is 330deg) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-full w-[2px] pointer-events-none" style="transform: rotate(330deg)">
+<div class="absolute top-[10%] left-1/2 -translate-x-1/2 -rotate-[330deg] flex flex-col items-center text-white font-bold drop-shadow-md">
+<span class="material-symbols-outlined text-3xl mb-1">phishing</span>
+<span class="whitespace-nowrap uppercase text-sm tracking-wider">Bánh Canh</span>
+</div>
+</div>
+<!-- Center Decor -->
+<div class="absolute inset-0 m-auto size-16 md:size-24 rounded-full bg-white dark:bg-[#23140f] flex items-center justify-center shadow-lg border-4 border-gray-100 dark:border-[#3a2e2a] z-10">
+<span class="material-symbols-outlined text-4xl text-primary animate-pulse">lunch_dining</span>
+</div>
+</div>
+<!-- Pointer -->
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 z-20 drop-shadow-xl filter">
+<svg class="text-[#23140f] dark:text-white fill-current" fill="none" height="48" viewbox="0 0 24 24" width="48" xmlns="http://www.w3.org/2000/svg">
+<path d="M12 22L7 4L12 2L17 4L12 22Z" stroke="white" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<!-- Spin Button -->
+<button class="relative overflow-hidden group bg-primary hover:bg-orange-600 text-white rounded-full py-4 px-12 text-xl font-black shadow-xl shadow-orange-500/40 transform active:scale-95 transition-all duration-200">
+<span class="relative z-10 flex items-center gap-2">
+                            QUAY NGAY (SPIN)
+                            <span class="material-symbols-outlined">restart_alt</span>
+</span>
+<div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+</button>
+</div>
+<!-- Menu List Column (Right) -->
+<div class="lg:col-span-5 w-full">
+<div class="bg-white dark:bg-[#23140f] rounded-2xl shadow-lg border border-[#e7deda] dark:border-[#3a2e2a] p-6">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-[#181210] dark:text-white text-xl font-bold">Thực đơn trưa nay</h3>
+<span class="text-sm font-medium text-gray-400">6 món</span>
+</div>
+<div class="flex flex-col gap-3 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+<!-- Card 1 -->
+<label class="group flex items-center gap-4 rounded-xl border border-transparent bg-background-light dark:bg-[#2a1a15] p-3 hover:border-primary/30 transition-all cursor-pointer">
+<div class="size-16 shrink-0 rounded-lg overflow-hidden bg-white">
+<div class="w-full h-full bg-center bg-cover" data-alt="Plate of Vietnamese broken rice with pork chop" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDkdHs2ZkBvWi78yX6wZs6JovnwPl5PznTKgrvC59x7mTzB2Pyq2WRe1Iz6FxnJAQa_HcjfvvSUjWsJjnNnTkhn2xs-oWhhn73f5eKS6speiFlFqHosEuqiEZekCCwk4THYQL_-1DrqpayTmms1hyN8tTUmeJLhn2F0ZpO3xQdeiKe84r-M8qjJEY1vbbGRnCN1lk7xME1ZF-59ai_YyVnFaGovSeKnYlQ7FCFAkCzVxxSTaIJ_KtkhBTgsM07oKLRJ4M7hp5Mdk3Y");'></div>
+</div>
+<div class="flex grow flex-col">
+<p class="text-[#181210] dark:text-white text-base font-bold leading-normal group-hover:text-primary transition-colors">Cơm tấm (Broken Rice)</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">Sườn, bì, chả, trứng</p>
+</div>
+<div class="h-4 w-4 rounded-full border-2 border-primary bg-primary"></div>
+</label>
+<!-- Card 2 -->
+<label class="group flex items-center gap-4 rounded-xl border border-transparent bg-background-light dark:bg-[#2a1a15] p-3 hover:border-primary/30 transition-all cursor-pointer">
+<div class="size-16 shrink-0 rounded-lg overflow-hidden bg-white">
+<div class="w-full h-full bg-center bg-cover" data-alt="Plate of Vietnamese chicken rice" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC5fY99UiI5TDRhKFV3B0wzKrWoR5f-QA2b8NQ6SzgbNVgqpKKUO6LvGdZAUJImxC04jXZirg_ZvkLWKSd5ungeCxvou_wbmLREfaWoZ9jdy1RDKdpVdaHGwzYo2nPbfBLpMlOOfBrsjDjdvYWya5LbSICHq_URkQx1ROWutUZyeTJbr0StvPN2U4QnWPkIacoS3K0li4hOqthzHx87JeJmxUEpaVEaw-3mu6B4TmelnGAW-Z3mNjIcu-wNIBSOc-kvGVUskSal7G0");'></div>
+</div>
+<div class="flex grow flex-col">
+<p class="text-[#181210] dark:text-white text-base font-bold leading-normal group-hover:text-primary transition-colors">Cơm gà (Chicken Rice)</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">Gà luộc hoặc chiên mắm</p>
+</div>
+<div class="h-4 w-4 rounded-full border-2 border-gray-300 dark:border-gray-600"></div>
+</label>
+<!-- Card 3 -->
+<label class="group flex items-center gap-4 rounded-xl border border-transparent bg-background-light dark:bg-[#2a1a15] p-3 hover:border-primary/30 transition-all cursor-pointer">
+<div class="size-16 shrink-0 rounded-lg overflow-hidden bg-white">
+<div class="w-full h-full bg-center bg-cover" data-alt="Bowl of spicy crab noodle soup bun rieu" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD4HJlezLyv6w6m3el1iDTNCQVUZOszoY3choWpGUzMgs5MXrjO7SWos1sZCbLNUdTP7xyqYz_xDuuiB8QSeLm9i_hCv6NbzOYCMN6wC7b4KRHXob01et6BePVnxcwonb2bxGyKLSMa_fMOjU928Mq2RcGUnio7lgS54HLiAPSYFkFtWhor4l4eMrH29wPJGoKkO7VvIbsuHjkIneWxAm4cLtTZdasRLl5NVnrReqEnzVnvn3LoXu6WslBoK_92km62awoZfoLp50s");'></div>
+</div>
+<div class="flex grow flex-col">
+<p class="text-[#181210] dark:text-white text-base font-bold leading-normal group-hover:text-primary transition-colors">Bún riêu (Crab Noodle)</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">Đậm đà hương vị cua đồng</p>
+</div>
+<div class="h-4 w-4 rounded-full border-2 border-gray-300 dark:border-gray-600"></div>
+</label>
+<!-- Card 4 -->
+<label class="group flex items-center gap-4 rounded-xl border border-transparent bg-background-light dark:bg-[#2a1a15] p-3 hover:border-primary/30 transition-all cursor-pointer">
+<div class="size-16 shrink-0 rounded-lg overflow-hidden bg-white">
+<div class="w-full h-full bg-center bg-cover" data-alt="Bowl of spicy beef noodle soup bun bo hue" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAIJ3ixALVkBUeXeLkF2Z1SE4t7cpd4soP1t02eJ5e1cIT0-zV44f1vjokgl1d1Ua29H04s1Cfnb65QEXtwBvqdPctWoi5-qWD-YjQpg77TSHXUBzWEegkvbhNERhBw6G2bTE1Sg0akVJoSdYtcKba57tX79ubX0DW75FQLhW7dAWAZtZdUXDY8j55_-xwkfmyIF9v2RtOIX7euHGl1TGlWNEWr-dCJlJf7peksBV2ZNdgKr4Fh0KvOaE6BolQ1APtV6iWDnkwlTBc");'></div>
+</div>
+<div class="flex grow flex-col">
+<p class="text-[#181210] dark:text-white text-base font-bold leading-normal group-hover:text-primary transition-colors">Bún bò (Beef Noodle)</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">Cay nồng vị Huế</p>
+</div>
+<div class="h-4 w-4 rounded-full border-2 border-gray-300 dark:border-gray-600"></div>
+</label>
+<!-- Card 5 -->
+<label class="group flex items-center gap-4 rounded-xl border border-transparent bg-background-light dark:bg-[#2a1a15] p-3 hover:border-primary/30 transition-all cursor-pointer">
+<div class="size-16 shrink-0 rounded-lg overflow-hidden bg-white">
+<div class="w-full h-full bg-center bg-cover" data-alt="Bowl of clear noodle soup hu tieu" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCmT1IP9tmyKgJLDvKW-b2dbjanoC_9Sily0hYXeH55Lz8a-SM3CCbLsgjLDToZg42ngbUA62aHJUb27E7C5_YIqgzahehAhH50qIG8x-HhOmDedu7pBBWDuQcMET9qqpmtUmuhPQn91hewPir80EmXkRi2tt4WDYVEmZQaed9bRu4QAa0ZiFAAPlHtq4KZqdiqLMgIkCLwr2szixzy5JqUNh_VorXqdjIkdYk65pWJayay37KCCgaIjW6tcHn5egd3MR948RADpDE");'></div>
+</div>
+<div class="flex grow flex-col">
+<p class="text-[#181210] dark:text-white text-base font-bold leading-normal group-hover:text-primary transition-colors">Hủ tiếu (Pork/Seafood)</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">Nam Vang hoặc Sa Đéc</p>
+</div>
+<div class="h-4 w-4 rounded-full border-2 border-gray-300 dark:border-gray-600"></div>
+</label>
+<!-- Card 6 -->
+<label class="group flex items-center gap-4 rounded-xl border border-transparent bg-background-light dark:bg-[#2a1a15] p-3 hover:border-primary/30 transition-all cursor-pointer">
+<div class="size-16 shrink-0 rounded-lg overflow-hidden bg-white">
+<div class="w-full h-full bg-center bg-cover" data-alt="Bowl of thick noodle soup banh canh" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBq5dJjvvJXN2n5nC_J95dINgqWfwpgY1DdHgP8RLqgG5V1Wsx-2DfIfOoPQoSB2b669iWUq6IPe5r9pgZFoiUJxoRFvAMTip498SkFHLzAWE0ZhZ4-rYFh_0Reiwq6jd-rhHce2RWN9gjleeIhupDdoP4xRRcTKkbHzrhDkww2o1sHlg0By7XE2f_6kMxn_Hoh50W_oZ-IIayL6gC16zVBetM2Vu13ivVjV1ucpqLiDmaPbWw4z62LldBcLeyLZxxWIfpJ-wfZiXY");'></div>
+</div>
+<div class="flex grow flex-col">
+<p class="text-[#181210] dark:text-white text-base font-bold leading-normal group-hover:text-primary transition-colors">Bánh canh cá lóc</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">Ngọt thanh vị cá</p>
+</div>
+<div class="h-4 w-4 rounded-full border-2 border-gray-300 dark:border-gray-600"></div>
+</label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="flex justify-center pb-8 pt-4">
+<p class="text-gray-500 dark:text-gray-400 text-sm">© 2024 Lunch Randomizer. Made with ❤️ for Vietnamese Food.</p>
+</footer>
+</div>
+</body></html>
