@@ -1,65 +1,58 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hôm nay ăn gì — Vietnamese Lunch Randomizer</title>
-  </head>
-  <!DOCTYPE html>
-  <html lang="vi">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Hôm Nay Ăn Gì? - Vietnamese Lunch Randomizer</title>
-      <script src="https://cdn.tailwindcss.com"></script>
-      <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-      <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-      <script>
-        tailwind.config = {
-          theme: {
-            extend: {
-              fontFamily: {
-                sans: ['"Be Vietnam Pro"', 'sans-serif'],
-              },
-              colors: {
-                'vn-red': '#DA251D',
-                'vn-yellow': '#FFFF00',
-                'food-orange': '#F97316',
-                'food-green': '#10B981',
-                'food-blue': '#06B6D4',
-                'food-purple': '#8B5CF6',
-                'food-pink': '#EC4899',
-              },
-              animation: {
-                'bounce-short': 'bounce 0.5s ease-in-out 3',
-                'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              }
+    <title>Hôm Nay Ăn Gì? - Vietnamese Lunch Randomizer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['"Be Vietnam Pro"', 'sans-serif'],
+            },
+            colors: {
+              'vn-red': '#DA251D',
+              'vn-yellow': '#FFFF00',
+              'food-orange': '#F97316',
+              'food-green': '#10B981',
+              'food-blue': '#06B6D4',
+              'food-purple': '#8B5CF6',
+              'food-pink': '#EC4899',
+            },
+            animation: {
+              'bounce-short': 'bounce 0.5s ease-in-out 3',
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             }
           }
         }
-      </script>
-      <style>
-        body {
-          background-color: #FEF3C7; /* Amber-100 */
-          background-image: radial-gradient(#FDE68A 1px, transparent 1px);
-          background-size: 20px 20px;
-        }
-        .wheel-container {
-          filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.15));
-        }
-      </style>
-    <script type="importmap">
-  {
-    "imports": {
-      "react/": "https://esm.sh/react@^19.2.4/",
-      "react": "https://esm.sh/react@^19.2.4",
-      "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
-    }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #FEF3C7; /* Amber-100 */
+        background-image: radial-gradient(#FDE68A 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
+      .wheel-container {
+        filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.15));
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
   }
-  </script>
+}
+</script>
   </head>
-    <body>
-      <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-  </html>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
