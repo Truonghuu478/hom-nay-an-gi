@@ -1,67 +1,102 @@
-import React, { useMemo, useRef, useState } from 'react'
-import { motion, useAnimation } from 'framer-motion'
-import useSpinWheel from '../hooks/useSpinWheel'
-import { FOODS } from '../utils/constants'
-import { Food } from '../types'
+import React, { useMemo } from 'react';
+import { FoodItem } from '../types';
+import { WHEEL_SIZE } from '../constants';
 
-const COLORS = ['#FFADAD','#FFD6A5','#FDFFB6','#CAFFBF','#9BF6FF','#BDB2FF']
+interface WheelProps {
+  items: FoodItem[];
+  rotation: number;
+  isSpinning: boolean;
+  onTransitionEnd: () => void;
+}
 
-export default function Wheel({ onResult }: { onResult: (food: Food) => void }) {
-  const segments = FOODS.length
-  const radius = 160
-  const center = radius
-  const { spinning, startSpin } = useSpinWheel()
-  const controls = useAnimation()
-  const [currentIndex, setCurrentIndex] = useState<number | null>(null)
+const Wheel: React.FC<WheelProps> = ({ items, rotation, isSpinning, onTransitionEnd }) => {
+  const radius = WHEEL_SIZE / 2;
+  const numSegments = items.length;
+  const anglePerSegment = 360 / numSegments;
+  
+  const createSlicePath = (index: number) => {
+    const startAngle = (index * anglePerSegment * Math.PI) / 180;
+    const endAngle = ((index + 1) * anglePerSegment * Math.PI) / 180;
 
-  const segmentAngle = 360 / segments
+    const x1 = radius + radius * Math.cos(startAngle);
+    const y1 = radius + radius * Math.sin(startAngle);
+    const x2 = radius + radius * Math.cos(endAngle);
+    const y2 = radius + radius * Math.sin(endAngle);
 
-  const handleSpin = async () => {
-    if (spinning) return
-    const res = await startSpin(segments)
-    if (!res) return
-    // animate wheel rotation
-    await controls.start({ rotate: res.finalDegree }, { duration: res.duration, ease: [0.22, 1, 0.36, 1] })
-    // compute final index normalized
-    const target = ((res.targetIndex % segments) + segments) % segments
-    const food = FOODS[target]
-    setCurrentIndex(target)
-    onResult(food)
-  }
+    return `M ${radius} ${radius} L ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2} Z`;
+  };
 
-  const slices = useMemo(() => FOODS.map((f, i) => {
-    const start = i * segmentAngle
-    const end = start + segmentAngle
-    const largeArc = segmentAngle > 180 ? 1 : 0
-    const x1 = center + radius * Math.cos((Math.PI/180) * start)
-    const y1 = center + radius * Math.sin((Math.PI/180) * start)
-    const x2 = center + radius * Math.cos((Math.PI/180) * end)
-    const y2 = center + radius * Math.sin((Math.PI/180) * end)
-    const path = `M ${center} ${center} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} Z`
-    return { path, color: COLORS[i % COLORS.length], label: f.name }
-  }), [])
+  const wheelSegments = useMemo(() => {
+    return items.map((item, index) => {
+      const path = createSlicePath(index);
+      const midAngle = ((index + 0.5) * anglePerSegment * Math.PI) / 180;
+      const textRadius = radius * 0.75; 
+      const tx = radius + textRadius * Math.cos(midAngle);
+      const ty = radius + textRadius * Math.sin(midAngle);
+      const textRotation = (index + 0.5) * anglePerSegment + 90;
+
+      return (
+        <g key={item.id}>
+          <path d={path} fill={item.color} stroke="white" strokeWidth="2" />
+          <g transform={`translate(${tx}, ${ty}) rotate(${textRotation - 90})`}>
+             <text
+              x="0"
+              y="0"
+              fill={item.textColor}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              className="font-bold uppercase tracking-wider"
+              style={{ fontSize: '14px' }}
+            >
+              {item.name}
+            </text>
+            <text
+              x="0"
+              y="20"
+              fill={item.textColor}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              style={{ fontSize: '18px' }}
+            >
+              {item.icon}
+            </text>
+          </g>
+        </g>
+      );
+    });
+  }, [items, radius, anglePerSegment]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
-      <div style={{ position: 'relative', width: radius * 2, height: radius * 2 }}>
-        <motion.svg viewBox={`0 0 ${radius*2} ${radius*2}`} style={{ width: '100%', height: '100%' }} animate={controls} initial={{ rotate: 0 }}>
-          {slices.map((s, i) => (
-            <path key={i} d={s.path} fill={s.color} stroke="#fff" strokeWidth={2} />
-          ))}
-          {slices.map((s, i) => {
-            const angle = (i * segmentAngle) + segmentAngle/2 - 90
-            const x = center + Math.cos((Math.PI/180)*angle) * (radius * 0.6)
-            const y = center + Math.sin((Math.PI/180)*angle) * (radius * 0.6)
-            return (
-              <text key={`t-${i}`} x={x} y={y} fill="#222" fontSize={12} textAnchor="middle" dominantBaseline="middle" style={{ pointerEvents: 'none' }}>{FOODS[i].name}</text>
-            )
-          })}
-        </motion.svg>
-        <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', width: 0, height: 0, borderLeft: '12px solid transparent', borderRight: '12px solid transparent', borderBottom: '18px solid #111' }} />
+    <div className="wheel-container relative flex justify-center items-center">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-4 z-20">
+        <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-t-[40px] border-t-vn-red filter drop-shadow-lg"></div>
       </div>
-      <div style={{ display:'flex', gap:12 }}>
-        <button onClick={handleSpin} style={{ padding: '10px 16px', background: '#0ea5a4', color: 'white', border: 'none', borderRadius: 8 }}>Quay ngay</button>
+
+      <div 
+        className="rounded-full overflow-hidden border-4 border-white shadow-2xl bg-white"
+        style={{
+          width: WHEEL_SIZE,
+          height: WHEEL_SIZE,
+          transform: `rotate(${rotation}deg)`,
+          transition: isSpinning ? 'transform 4s cubic-bezier(0.15, 0, 0.20, 1)' : 'none'
+        }}
+        onTransitionEnd={onTransitionEnd}
+      >
+        <svg
+          width="100%"
+          height="100%"
+          viewBox={`0 0 ${WHEEL_SIZE} ${WHEEL_SIZE}`}
+        >
+          {wheelSegments}
+        </svg>
+      </div>
+
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white rounded-full shadow-lg z-10 flex items-center justify-center border-4 border-gray-100">
+         <span className="text-2xl">🇻🇳</span>
       </div>
     </div>
-  )
-}
+  );
+};
+
+export default Wheel;
+
